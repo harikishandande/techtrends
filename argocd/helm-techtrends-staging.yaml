@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     # >>> CHANGE THIS to your own GitHub repository URL <<<
-    repoURL: https://github.com/<your-github-username>/<your-repo>.git
+    repoURL: https://github.com/harikishandande/techtrends.git
     targetRevision: HEAD
     # Path to the Helm chart inside your repo.
     # If your repo root contains the project folder, use: project/helm

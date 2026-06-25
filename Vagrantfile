@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   
   # Configure the parameters for VirtualBox provider
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "4096"
+    vb.memory = "6144"
     vb.cpus = 4
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end

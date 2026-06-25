@@ -5,7 +5,7 @@ namespace:
   name: sandbox
 
 image:
-  repository: techtrends
+  repository: harikishandande/techtrends
   tag: latest
   pullPolicy: IfNotPresent
 
