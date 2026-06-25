@@ -1,0 +1,93 @@
+## Docker commands used to build the application
+# Run from inside the techtrends/ directory (where the Dockerfile lives).
+# -t tags the image as "techtrends"; the "." is the build context and the
+# location of the Dockerfile (./Dockerfile).
+cd techtrends
+docker build -t techtrends .
+
+
+## Docker commands used to run the application
+# Run in detached mode (-d) and expose container port 3111 on host port 7111.
+docker run -d -p 7111:3111 techtrends
+
+# The application is now accessible at http://127.0.0.1:7111
+
+
+## Docker commands used to get the application logs
+# Find the running container ID:
+docker ps
+# Retrieve the logs (replace <CONTAINER_ID> with the value from `docker ps`):
+docker logs <CONTAINER_ID>
+
+
+## Logs from the container running the TechTrends application
+# (Example output produced by the application. Replace with the output of your
+#  own `docker logs` command after browsing the site at http://127.0.0.1:7111)
+
+ * Serving Flask app 'app'
+ * Debug mode: off
+INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3111
+ * Running on http://172.17.0.2:3111
+INFO:werkzeug:Press CTRL+C to quit
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET / HTTP/1.1" 200 -
+INFO:app:06/24/2026, 19:39:47, Article "2020 CNCF Annual Report" retrieved!
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /1 HTTP/1.1" 200 -
+INFO:app:06/24/2026, 19:39:47, The "About Us" page is retrieved.
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /about HTTP/1.1" 200 -
+ERROR:app:06/24/2026, 19:39:47, Article with id "999" does not exist! 404 page returned.
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /999 HTTP/1.1" 404 -
+DEBUG:app:06/24/2026, 19:39:47, Metrics request successful!
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /metrics HTTP/1.1" 200 -
+DEBUG:app:06/24/2026, 19:39:47, Health request successful!
+INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /healthz HTTP/1.1" 200 -
+
+
+
+
+
+PS C:\Users\Hari\Desktop\cloud native fundamentals\techtrends-project-latest\project\techtrends> docker logs 41dfa9f1302a
+ * Serving Flask app 'app'
+ * Debug mode: off
+INFO:werkzeug:06/25/2026, 00:32:18, WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3111
+ * Running on http://172.17.0.2:3111
+INFO:werkzeug:06/25/2026, 00:32:18, Press CTRL+C to quit
+INFO:werkzeug:06/25/2026, 00:32:51, 172.17.0.1 - - [25/Jun/2026 00:32:51] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:32:51, 172.17.0.1 - - [25/Jun/2026 00:32:51] "GET /static/css/main.css HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:32:52, 172.17.0.1 - - [25/Jun/2026 00:32:52] "GET /favicon.ico HTTP/1.1" 404 -
+DEBUG:app:06/25/2026, 00:33:21, Metrics request successful!
+INFO:werkzeug:06/25/2026, 00:33:21, 172.17.0.1 - - [25/Jun/2026 00:33:21] "GET /metrics HTTP/1.1" 200 -
+DEBUG:app:06/25/2026, 00:33:43, Health request successful!
+INFO:werkzeug:06/25/2026, 00:33:43, 172.17.0.1 - - [25/Jun/2026 00:33:43] "GET /healthz HTTP/1.1" 200 -
+DEBUG:app:06/25/2026, 00:33:50, Metrics request successful!
+INFO:werkzeug:06/25/2026, 00:33:50, 172.17.0.1 - - [25/Jun/2026 00:33:50] "GET /metrics HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:35:43, 172.17.0.1 - - [25/Jun/2026 00:35:43] "GET /create HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:35:43, 172.17.0.1 - - [25/Jun/2026 00:35:43] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:35:47, 172.17.0.1 - - [25/Jun/2026 00:35:47] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:35:47, 172.17.0.1 - - [25/Jun/2026 00:35:47] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:37:15, 172.17.0.1 - - [25/Jun/2026 00:37:15] "GET /create HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:15, 172.17.0.1 - - [25/Jun/2026 00:37:15] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:37:34, 172.17.0.1 - - [25/Jun/2026 00:37:34] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:34, 172.17.0.1 - - [25/Jun/2026 00:37:34] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:06/25/2026, 00:37:36, Article "2020 CNCF Annual Report" retrieved!
+INFO:werkzeug:06/25/2026, 00:37:36, 172.17.0.1 - - [25/Jun/2026 00:37:36] "GET /1 HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:36, 172.17.0.1 - - [25/Jun/2026 00:37:36] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:37:38, 172.17.0.1 - - [25/Jun/2026 00:37:38] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:38, 172.17.0.1 - - [25/Jun/2026 00:37:38] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:06/25/2026, 00:37:39, Article "KubeCon + CloudNativeCon 2021" retrieved!
+INFO:werkzeug:06/25/2026, 00:37:39, 172.17.0.1 - - [25/Jun/2026 00:37:39] "GET /2 HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:39, 172.17.0.1 - - [25/Jun/2026 00:37:39] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:37:41, 172.17.0.1 - - [25/Jun/2026 00:37:41] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:41, 172.17.0.1 - - [25/Jun/2026 00:37:41] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:app:06/25/2026, 00:37:43, The "About Us" page is retrieved.
+INFO:werkzeug:06/25/2026, 00:37:43, 172.17.0.1 - - [25/Jun/2026 00:37:43] "GET /about HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:43, 172.17.0.1 - - [25/Jun/2026 00:37:43] "GET /static/css/main.css HTTP/1.1" 304 -
+INFO:werkzeug:06/25/2026, 00:37:45, 172.17.0.1 - - [25/Jun/2026 00:37:45] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:06/25/2026, 00:37:45, 172.17.0.1 - - [25/Jun/2026 00:37:45] "GET /static/css/main.css HTTP/1.1" 304 -
+
+What's next:
+    View and search logs for all containers in one place
+    with Docker Desktop's Logs view. docker-desktop://dashboard/logs

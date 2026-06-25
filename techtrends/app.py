@@ -1,0 +1,159 @@
+import sqlite3
+import logging
+import sys
+
+from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
+from werkzeug.exceptions import abort
+
+# ---------------------------------------------------------------------------
+# Logging configuration
+# ---------------------------------------------------------------------------
+# Capture all Python logs at the DEBUG level. Every log line is timestamped
+# (see datefmt below) and routed to BOTH STDOUT and STDERR:
+#   * INFO / DEBUG  -> STDOUT
+#   * WARNING+      -> STDERR
+# This satisfies the requirement that application events are recorded to
+# STDOUT & STDERR with a timestamp on every line.
+
+# Handler that writes DEBUG/INFO records to STDOUT
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+stdout_handler.addFilter(lambda record: record.levelno < logging.WARNING)
+
+# Handler that writes WARNING/ERROR/CRITICAL records to STDERR
+stderr_handler = logging.StreamHandler(sys.stderr)
+stderr_handler.setLevel(logging.WARNING)
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(levelname)s:%(name)s:%(asctime)s, %(message)s',
+    datefmt='%m/%d/%Y, %H:%M:%S',
+    handlers=[stdout_handler, stderr_handler]
+)
+
+# ---------------------------------------------------------------------------
+# Database helpers
+# ---------------------------------------------------------------------------
+# Global counter that tracks how many connections were opened to the database.
+db_connection_count = 0
+
+
+# Function to get a database connection.
+# This function connects to database with the name `database.db`
+def get_db_connection():
+    global db_connection_count
+    db_connection_count += 1
+    connection = sqlite3.connect('database.db')
+    connection.row_factory = sqlite3.Row
+    return connection
+
+
+# Function to get a post using its ID
+def get_post(post_id):
+    connection = get_db_connection()
+    post = connection.execute('SELECT * FROM posts WHERE id = ?',
+                              (post_id,)).fetchone()
+    connection.close()
+    return post
+
+
+# Define the Flask application
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your secret key'
+# Ensure Flask's own logger also emits at DEBUG level
+app.logger.setLevel(logging.DEBUG)
+
+
+# Define the main route of the web application
+@app.route('/')
+def index():
+    connection = get_db_connection()
+    posts = connection.execute('SELECT * FROM posts').fetchall()
+    connection.close()
+    return render_template('index.html', posts=posts)
+
+
+# Define how each individual article is rendered
+# If the post ID is not found a 404 page is shown
+@app.route('/<int:post_id>')
+def post(post_id):
+    post = get_post(post_id)
+    if post is None:
+        # Log that a non-existing article was requested -> 404 (STDERR)
+        app.logger.error('Article with id "%s" does not exist! 404 page returned.', post_id)
+        return render_template('404.html'), 404
+    else:
+        # Log the title of the retrieved article (STDOUT)
+        app.logger.info('Article "%s" retrieved!', post['title'])
+        return render_template('post.html', post=post)
+
+
+# Define the About Us page
+@app.route('/about')
+def about():
+    # Log that the About Us page was retrieved (STDOUT)
+    app.logger.info('The "About Us" page is retrieved.')
+    return render_template('about.html')
+
+
+# Define the post creation functionality
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+
+        if not title:
+            flash('Title is required!')
+        else:
+            connection = get_db_connection()
+            connection.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
+                               (title, content))
+            connection.commit()
+            connection.close()
+
+            # Log the title of the newly created article (STDOUT)
+            app.logger.info('A new article "%s" is created!', title)
+
+            return redirect(url_for('index'))
+
+    return render_template('create.html')
+
+
+# Healthcheck endpoint
+# Returns HTTP 200 and a JSON body confirming the app is healthy.
+@app.route('/healthz')
+def healthz():
+    response = app.response_class(
+        response=json.dumps({"result": "OK - healthy"}),
+        status=200,
+        mimetype='application/json'
+    )
+    app.logger.debug('Health request successful!')
+    return response
+
+
+# Metrics endpoint
+# Returns HTTP 200 and a JSON body with the live post count and the total
+# number of database connections opened since the application started.
+@app.route('/metrics')
+def metrics():
+    connection = get_db_connection()
+    post_count = connection.execute('SELECT COUNT(*) FROM posts').fetchone()[0]
+    connection.close()
+
+    response = app.response_class(
+        response=json.dumps({
+            "db_connection_count": db_connection_count,
+            "post_count": post_count
+        }),
+        status=200,
+        mimetype='application/json'
+    )
+    app.logger.debug('Metrics request successful!')
+    return response
+
+
+# start the application on port 3111
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port='3111')

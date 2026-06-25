@@ -1,0 +1,18 @@
+# Input values for the STAGING environment.
+# Values not specified here are inherited from values.yaml.
+
+namespace:
+  name: staging
+
+replicaCount: 3
+
+service:
+  port: 5111
+
+resources:
+  requests:
+    memory: 90Mi
+    cpu: 300m
+  limits:
+    memory: 128Mi
+    cpu: 500m
