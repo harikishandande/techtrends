@@ -27,11 +27,15 @@ spec:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
             port: {{ .Values.containerPort }}
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 30
+          periodSeconds: 20
+          timeoutSeconds: 10
+          failureThreshold: 6
         readinessProbe:
           httpGet:
             path: {{ .Values.readinessProbe.path }}
             port: {{ .Values.containerPort }}
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 10
+          failureThreshold: 6
