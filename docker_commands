@@ -1,52 +1,17 @@
 ## Docker commands used to build the application
-# Run from inside the techtrends/ directory (where the Dockerfile lives).
-# -t tags the image as "techtrends"; the "." is the build context and the
-# location of the Dockerfile (./Dockerfile).
 cd techtrends
 docker build -t techtrends .
 
 
 ## Docker commands used to run the application
-# Run in detached mode (-d) and expose container port 3111 on host port 7111.
 docker run -d -p 7111:3111 techtrends
-
-# The application is now accessible at http://127.0.0.1:7111
 
 
 ## Docker commands used to get the application logs
-# Find the running container ID:
-docker ps
-# Retrieve the logs (replace <CONTAINER_ID> with the value from `docker ps`):
-docker logs <CONTAINER_ID>
+docker logs 41dfa9f1302a
 
 
 ## Logs from the container running the TechTrends application
-# (Example output produced by the application. Replace with the output of your
-#  own `docker logs` command after browsing the site at http://127.0.0.1:7111)
-
- * Serving Flask app 'app'
- * Debug mode: off
-INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
- * Running on all addresses (0.0.0.0)
- * Running on http://127.0.0.1:3111
- * Running on http://172.17.0.2:3111
-INFO:werkzeug:Press CTRL+C to quit
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET / HTTP/1.1" 200 -
-INFO:app:06/24/2026, 19:39:47, Article "2020 CNCF Annual Report" retrieved!
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /1 HTTP/1.1" 200 -
-INFO:app:06/24/2026, 19:39:47, The "About Us" page is retrieved.
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /about HTTP/1.1" 200 -
-ERROR:app:06/24/2026, 19:39:47, Article with id "999" does not exist! 404 page returned.
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /999 HTTP/1.1" 404 -
-DEBUG:app:06/24/2026, 19:39:47, Metrics request successful!
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /metrics HTTP/1.1" 200 -
-DEBUG:app:06/24/2026, 19:39:47, Health request successful!
-INFO:werkzeug:172.17.0.1 - - [24/Jun/2026 19:39:47] "GET /healthz HTTP/1.1" 200 -
-
-
-
-
-
 PS C:\Users\Hari\Desktop\cloud native fundamentals\techtrends-project-latest\project\techtrends> docker logs 41dfa9f1302a
  * Serving Flask app 'app'
  * Debug mode: off

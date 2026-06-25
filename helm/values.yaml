@@ -1,6 +1,3 @@
-# Default values for the TechTrends Helm chart.
-# These act as the defaults (sandbox environment).
-
 namespace:
   name: sandbox
 

@@ -1,5 +1,4 @@
 # Input values for the STAGING environment.
-# Values not specified here are inherited from values.yaml.
 
 namespace:
   name: staging

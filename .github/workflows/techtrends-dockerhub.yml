@@ -1,6 +1,5 @@
 name: TechTrends - Package with Docker
 
-# Trigger the workflow on every push to the main branch
 on:
   push:
     branches:
@@ -29,11 +28,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          # Context is the project directory containing the application + Dockerfile
           context: ./techtrends
-          # Reference the TechTrends Dockerfile
           file: ./techtrends/Dockerfile
           platforms: linux/amd64
           push: true
-          # Push to DockerHub as <your-dockerhub-username>/techtrends:latest
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/techtrends:latest

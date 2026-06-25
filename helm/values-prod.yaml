@@ -1,5 +1,4 @@
 # Input values for the PRODUCTION environment.
-# Values not specified here are inherited from values.yaml.
 
 namespace:
   name: prod
