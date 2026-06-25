@@ -12,8 +12,8 @@ from werkzeug.exceptions import abort
 # (see datefmt below) and routed to BOTH STDOUT and STDERR:
 #   * INFO / DEBUG  -> STDOUT
 #   * WARNING+      -> STDERR
-# This satisfies the requirement that application events are recorded to
-# STDOUT & STDERR with a timestamp on every line.
+# Application events are written to
+# both STDOUT and STDERR, each line carrying a timestamp.
 
 # Handler that writes DEBUG/INFO records to STDOUT
 stdout_handler = logging.StreamHandler(sys.stdout)

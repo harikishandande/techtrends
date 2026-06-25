@@ -1,10 +1,7 @@
-# Use a Python 3.8 base image.
-# NOTE: The project brief asks for "Python version 3.8". The starter
-# requirements.txt originally pinned Flask 3.1.0, which dropped Python 3.8
-# support, so Flask is pinned to 3.0.3 (the latest release that supports 3.8).
+# Python 3.8 base image
 FROM python:3.8
 
-LABEL maintainer="TechTrends Platform Engineer"
+LABEL maintainer="Hari Kishan Dande"
 
 # Working directory inside the container
 WORKDIR /app
